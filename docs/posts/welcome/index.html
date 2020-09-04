@@ -42,15 +42,16 @@
 <meta property="twitter:description" content="This is a first post"/>
 
 <!--/radix_placeholder_meta_tags-->
+  
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["My first post"]},{"type":"character","attributes":{},"value":["This is a first post"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Matt Crump"]},{"type":"character","attributes":{},"value":["https://crumplab.github.io"]},{"type":"character","attributes":{},"value":["Brooklyn College"]},{"type":"character","attributes":{},"value":["https://brooklyn.cuny.edu"]}]}]},{"type":"character","attributes":{},"value":["08-26-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","bibliography","csl","output"]}},"value":[{"type":"character","attributes":{},"value":["My first post"]},{"type":"character","attributes":{},"value":["This is a first post"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Matt Crump"]},{"type":"character","attributes":{},"value":["https://crumplab.github.io"]},{"type":"character","attributes":{},"value":["Brooklyn College"]},{"type":"character","attributes":{},"value":["https://brooklyn.cuny.edu"]}]}]},{"type":"character","attributes":{},"value":["08-26-2020"]},{"type":"character","attributes":{},"value":["newpapers.bib"]},{"type":"character","attributes":{},"value":["apa.csl"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["welcome_files/bowser-1.9.3/bowser.min.js","welcome_files/distill-2.2.21/template.v2.js","welcome_files/header-attrs-2.3/header-attrs.js","welcome_files/jquery-1.11.3/jquery.min.js","welcome_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["apa.csl","img/course.png","newpapers.bib","welcome_files/bowser-1.9.3/bowser.min.js","welcome_files/distill-2.2.21/template.v2.js","welcome_files/header-attrs-2.3/header-attrs.js","welcome_files/jquery-1.11.3/jquery.min.js","welcome_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 
@@ -618,6 +619,16 @@ pre.text-output {
   color: rgba(0, 0, 0, 1.0);
 }
 
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
 
 
 /* Tweak 1000px media break to show more text */
@@ -939,23 +950,8 @@ function init_distill() {
   // create d-appendix
   $('.d-appendix').changeElementType('d-appendix');
 
-  // create d-bibliography
-  var bibliography = $('<d-bibliography></d-bibliography>');
-  $('#distill-bibliography').wrap(bibliography);
-
   // flag indicating that we have appendix items
   var appendix = $('.appendix-bottom').children('h3').length > 0;
-
-  // replace citations with <d-cite>
-  $('.citation').each(function(i, val) {
-    appendix = true;
-    var cites = $(this).attr('data-cites').split(" ");
-    var dt_cite = $('<d-cite></d-cite>');
-    dt_cite.attr('key', cites.join());
-    $(this).replaceWith(dt_cite);
-  });
-  // remove refs
-  $('#refs').remove();
 
   // replace footnotes with <d-footnote>
   $('.footnote-ref').each(function(i, val) {
@@ -972,6 +968,9 @@ function init_distill() {
   });
   // remove footnotes
   $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
 
   $('h1.appendix, h2.appendix').each(function(i, val) {
     $(this).changeElementType('h3');
@@ -1325,6 +1324,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div class="d-article">
 <p>I can write my first post. And, basically just write a plain text file.</p>
+<h1 id="my-first-level-header">my first level header</h1>
+<p>Some more text could go here. I’m writing about something. It’s taking a while.</p>
+<h2 id="here-is-a-second-level-header">Here is a second level header</h2>
+<p>Here is some more text. Here is some more text. Here is some more text. Here is some more text. Here is some more text. Here is some more text. Here is some more text. Here is some more text. Here is some more text.</p>
+<ol type="1">
+<li>This is a first thing</li>
+<li>This is a second thing</li>
+<li>This is a third thing</li>
+</ol>
+<ul>
+<li>bullet one</li>
+<li>bullet two</li>
+<li>bullet three</li>
+</ul>
+<p>You can insert links like this <a href="https://crumplab.github.io" class="uri">https://crumplab.github.io</a>.</p>
+<p>Or you can insert links like this <a href="https://crumplab.github.io">my website</a>.</p>
+<p><a href="https://www.markdownguide.org/basic-syntax/" class="uri">https://www.markdownguide.org/basic-syntax/</a></p>
+<h2 id="citing-a-paper">citing a paper</h2>
+<p>In one example, researchers studied the Stroop effect <span class="citation" data-cites="algomRationalLookEmotional2004">(Algom et al., <a href="#ref-algomRationalLookEmotional2004" role="doc-biblioref">2004</a>)</span>.</p>
+<p>Blah blah blah <span class="citation" data-cites="verhaeghenAgingStroopEffect1998">(Verhaeghen &amp; De Meersman, <a href="#ref-verhaeghenAgingStroopEffect1998" role="doc-biblioref">1998</a>)</span></p>
+<h2 id="pictures">pictures</h2>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/course.png" width="50%" style="display: block; margin: auto;" /></p>
+</div>
+<h2 class="unnumbered" id="references" class="unnumbered">References</h2>
+<div id="refs" class="references hanging-indent" role="doc-bibliography">
+<div id="ref-algomRationalLookEmotional2004">
+<p>Algom, D., Chajut, E., &amp; Lev, S. (2004). A rational look at the emotional stroop phenomenon: A generic slowdown, not a stroop effect. <em>Journal of Experimental Psychology: General</em>, <em>133</em>(3), 323. <a href="https://doi.org/10/fhttjh">https://doi.org/10/fhttjh</a></p>
+</div>
+<div id="ref-verhaeghenAgingStroopEffect1998">
+<p>Verhaeghen, P., &amp; De Meersman, L. (1998). Aging and the Stroop effect: A meta-analysis. <em>Psychology and Aging</em>, <em>13</em>(1), 120. <a href="https://doi.org/10/fr9jnh">https://doi.org/10/fr9jnh</a></p>
+</div>
+</div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1336,7 +1368,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom"></div>
+<div class="appendix-bottom">
+  <h3 id="references">References</h3>
+  <div id="references-listing"></div>
+</div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->
